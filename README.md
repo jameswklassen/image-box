@@ -1,68 +1,51 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# image-box
 
-## Available Scripts
+image-box is an online image repository for uploading and saving images online. Created for the Shopify Developer Intern Coding challenge.
 
-In the project directory, you can run:
 
-### `npm start`
+## Usage
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+After cloning the repo, create a `.env` file and set the environment variables outlined in `.env-example`. These environment variables are all authentication from Firebase, and can be found in the **Firebase console**.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Once the `.env` file has been properly created, run 
 
-### `npm test`
+```
+yarn install
+```
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To properly install all dependencies.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Once all dependencies have been installed run
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+yarn start
+```
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This will start the local development server on `localhost:3000`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Technologies
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [React](https://reactjs.org)
+- [Cloud Firestore](https://firebase.google.com/products/firestore/)
+- [Firebase Cloud Storage](https://firebase.google.com/products/storage/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This image repository was built using the [React](https://reactjs.org) JavaScript framework for UI. Individual UI components came from [Semantic UI for React](https://react.semantic-ui.com)
 
-### Code Splitting
+[Firebase](https://firebase.google.com/) is used to store images and their references/tags. Images themselves are stored in Firebase's [Cloud Storage](https://firebase.google.com/products/storage/), and all references and tags are stored in a [Cloud Firestore](https://firebase.google.com/products/firestore/) database.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Screenshots
 
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Initial view
+![Initial](docs/img/initial.png)
+### Adding images
+![Adding Images](docs/img/adding_images.png)
+### Uploading images
+![Uploading Images](docs/img/uploading_images.png)
+### View with images
+![With Images](docs/img/with_images.png)

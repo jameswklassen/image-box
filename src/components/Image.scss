@@ -1,0 +1,13 @@
+.image-box__image {
+  img {
+    margin-top: 15px;
+    border-radius: 10px;
+  }
+  &-name {
+    font-weight: 700;
+    color: #111;
+  }
+  &-tags {
+    color: #aaa;
+  }
+}
