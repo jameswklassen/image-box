@@ -6,8 +6,11 @@ import {
 	Header,
 	Divider,
 	Button,
+	Dimmer,
 	Loader,
-	Message,
+	Input,
+	Grid,
+	Item,
 } from 'semantic-ui-react'
 
 import { uploadImage, removeImage, getImages } from '../databse/ImageRepository';
@@ -26,14 +29,14 @@ class ImageLibrary extends Component {
 			imagesToUpload: null,
 			images: [],
 			imagesLoading: true,
-			imageUploading: false,
+			imagesUploading: false,
 			imageDeleting: false,
 		}
 	}
 
 	componentDidMount() {
 		getImages().then((result) => {
-			console.log(result);
+			console.log('images: ', result);
 			this.setState({
 				imagesLoading: false,
 				images: result
@@ -49,10 +52,10 @@ class ImageLibrary extends Component {
 			return
 		}
 
-		this.setState({ imageUploading: true })
+		this.setState({ imagesUploading: true })
 
 		// Iterate through all images 
-		Array.from(imagesToUpload).forEach(image => {
+		imagesToUpload.forEach(image => {
 			// Start uploading the image to firebase storage
 			uploadImage(image).then(result => {
 				console.log(`uploaded ${result.name}`)
@@ -60,17 +63,15 @@ class ImageLibrary extends Component {
 				// add the image we uploaded to the array of images
 				this.setState(prevState => ({
 					images: [...prevState.images, result ],
-					imageUploading: false
+					imagesUploading: false,
+					imagesToUpload: null,
 				}));
 			});
-		});
-
-		this.setState({
-			imagesToUpload: null,
 		});
 	}
 
 	handleRemove = image => {
+		this.setState({ imageDeleting : true })
 		removeImage(image).then(() => {
 			console.log(`removed ${image.name}`);
 
@@ -79,55 +80,121 @@ class ImageLibrary extends Component {
 			});
 
 			// add the image we uploaded to the array of images
-			this.setState({ images: [...filteredImages] });
+			this.setState({
+				images: [...filteredImages],
+				imageDeleting: false,
+			});
 		})
 	}
 
 	// when files are added from the 'add files' button, store them
 	handleChange = event => {
 		if(event.target.files[0]) {
-			const imagesToUpload = event.target.files;
+			const files = event.target.files;
+			let imagesToUpload = [];
+			
+			Array.from(files).forEach(image => {
+				// Start uploading the image to firebase storage
+				imagesToUpload.push({
+					image,
+					tags: [],
+				})
+			});
+
 			this.setState(() => ({ imagesToUpload }));
 		}
 	}
 
+	changeTag = event => {
+		this.setTag(parseInt(event.target.id), event.target.value);
+	}
+
+	setTag = (id, tag) => {
+		const { imagesToUpload } = this.state;
+
+		if (tag !== ''){
+			imagesToUpload[id].tags = tag.replace(/\s/g,'').split(','); 
+			this.setState({ imagesToUpload });
+		}
+	}
+
 	render() {
-		console.log('rendering');
-		console.log(this.state.images);
-		const { images, imagesToUpload, imageUploading } = this.state;
+		const { images, imagesToUpload, imagesLoading, imagesUploading, imageDeleting } = this.state;
 
 		return (
-			<Container text>
+			<Container>
 					<Header as="h1" textAlign="center">
 						Super Cool Photo Thing
 					</Header>
+					<Header as="h4" textAlign="center">
+						Shopify Fall 2019 Internship Coding Challenge
+					</Header>
 
-					<Segment textAlign="center">
+					<Grid
+					columns={2}
+					>
+						<Grid.Column width={6}>
+							<Segment textAlign="center">
 						<Header as="h2">
-							Choose your photos
+							{ imagesToUpload ? 'Review upload selection' : 'Choose photos to upload' }
 						</Header>
 
 						<input type="file" multiple onChange={this.handleChange}></input>
 						<Divider/>
+						{
+							imagesToUpload ?
+								<Grid columns={3} verticalAlign='bottom' > 
+									<Dimmer inverted active={imagesUploading}>
+										<Loader inverted content={`Uploading ${imagesToUpload.length} ${imagesToUpload.length !== 1 ? 'images' : 'image'}`} />
+									</Dimmer>
+								{
+									imagesToUpload.map((object, index) => {
+										return (
+											<Item>
+												<Item.Image
+													size='tiny'
+													src={URL.createObjectURL(object.image)}
+												/>
+												<Item.Content>
+													<Item.Header>
+														{ object.image.name }
+													</Item.Header>
+													<Input
+														placeholder='Enter tags'
+														onChange={this.changeTag}
+														id={index}
+													/>
+												</Item.Content>
+											</Item>
+										)
+									}) 
+								} 
+								</Grid>
+							: null
+						}
+						{ imagesToUpload ? <Divider/> : null }	
 						<Button
 							primary={imagesToUpload}
 							disabled={!imagesToUpload}
-							loading={imageUploading}
 							onClick={this.handleUpload}
 						>
-							{ imagesToUpload ? 'Upload images' : 'No images selected' } 
+							{ imagesToUpload ? `Upload ${imagesToUpload.length} ${imagesToUpload.length !== 1 ? 'images' : 'image'}` : 'No images selected' } 
 						</Button>
 					</Segment>
-					<Segment>
-						<ImageGrid
-							columns={4}
-							imageUploading={imageUploading}
-							images={images}
-							handleRemove={this.handleRemove}
-						/>
-					</Segment>
+						</Grid.Column>
 
-
+						<Grid.Column width={10}>
+							<Segment>
+								<ImageGrid
+									columns={4}
+									imagesLoading={imagesLoading}
+									images={images}
+									handleRemove={this.handleRemove}
+									imageDeleting={imageDeleting}
+								/>
+							</Segment>
+						</Grid.Column>
+					</Grid>
 			</Container>
 		);
 	}

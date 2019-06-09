@@ -4,23 +4,39 @@ import {
     Button,
 } from 'semantic-ui-react';
 
+import './Image.scss';
 
 const Image = props => {
     const { image, link } = props;
 
     return(
-        <div>
+        <div className='image-box__image'>
+
+            <a href={link}>
+                <img src={link} alt={link}/>
+            </a>
+            <p className='image-box__image-name'>
+                { image.name }
+            </p>
+            <p className='image-box__image-tags'>
+                <Icon name='tags'/>
+                {
+                    image.tags.map((tag, index) => {
+                        return index < image.tags.length - 1 ? `${tag}, ` : tag;
+                    })
+                }
+            </p>
+
             <Button
                 icon
+                size='mini'
                 labelPosition='left'
                 onClick={ () => props.onClose(image) }
+                loading={ props.imageDeleting }
             >
                 <Icon name='trash' />
                 Delete Image
             </Button>
-            <a href={link}>
-                <img src={link} alt={link}/>
-            </a>
         </div>
     );
 }

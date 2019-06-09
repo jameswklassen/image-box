@@ -1,28 +1,25 @@
 import React from 'react';
 import { 
     Grid,
-    Icon,
-    Button,
+    Dimmer,
     Loader,
 } from 'semantic-ui-react';
 
 import Image from './Image';
 
 const ImageGrid = props => {
-    const { images, handleRemove, columns, imagesLoading } = props;
-    console.log('imagegrid', images);
-
-    if (imagesLoading) {
-        return <Loader active inline='centered'/>
-    }
+    const { images, handleRemove, columns, imagesLoading, imageDeleting } = props;
 
     return (
         <Grid
             columns={columns}
+            verticalAlign='bottom'
         >
+            <Dimmer inverted active={imagesLoading || imageDeleting}>
+                <Loader inverted content={`${ imagesLoading ? 'Images Loading' : 'Image deleting'}`}/>
+            </Dimmer>
             {
                 images.map(image => {
-                    console.log(image);
                     return(
                         <Grid.Column>
                             <Image

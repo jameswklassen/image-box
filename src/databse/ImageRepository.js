@@ -2,7 +2,9 @@ import { storage, db } from '../firebase';
 
 import { IMAGE_UPLOAD_STATUS } from '../common/constants'
 
-const uploadImage = image => {
+const uploadImage = imageObject => {
+    const { image, tags } = imageObject;
+
     console.log(`uploading ${image.name}`)
     return new Promise((resolve, reject) => {
         const uploadTask = storage.ref(`images/${image.name}`).put(image);
@@ -22,6 +24,7 @@ const uploadImage = image => {
                 .then(url => {
                     const newImage = {
                         name: image.name,
+                        tags: tags,
                         link: url
                     }; 
 
