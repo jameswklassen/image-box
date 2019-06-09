@@ -11,21 +11,12 @@ const Image = props => {
 
     return(
         <div className='image-box__image'>
-
             <a href={link}>
                 <img src={link} alt={link}/>
             </a>
-            <p className='image-box__image-name'>
-                { image.name }
-            </p>
-            <p className='image-box__image-tags'>
-                <Icon name='tags'/>
-                {
-                    image.tags.map((tag, index) => {
-                        return index < image.tags.length - 1 ? `${tag}, ` : tag;
-                    })
-                }
-            </p>
+            <p className='image-box__image-name'>{ image.name }</p>
+
+            { renderTags(image.tags) }
 
             <Button
                 icon
@@ -35,10 +26,25 @@ const Image = props => {
                 loading={ props.imageDeleting }
             >
                 <Icon name='trash' />
-                Delete Image
+                Delete
             </Button>
         </div>
     );
+}
+
+const renderTags = tags => {
+    if (tags.length > 0) {
+        return (
+            <p className='image-box__image-tags'>
+                <Icon name='tags'/>
+                {
+                    tags.map((tag, index) => {
+                        return index < tags.length - 1 ? `${tag}, ` : tag;
+                    })
+                }
+            </p>
+        );
+    }
 }
 
 export default Image;

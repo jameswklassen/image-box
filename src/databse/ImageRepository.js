@@ -5,7 +5,6 @@ import { IMAGE_UPLOAD_STATUS } from '../common/constants'
 const uploadImage = imageObject => {
     const { image, tags } = imageObject;
 
-    console.log(`uploading ${image.name}`)
     return new Promise((resolve, reject) => {
         const uploadTask = storage.ref(`images/${image.name}`).put(image);
         
@@ -39,17 +38,14 @@ const uploadImage = imageObject => {
 
 const removeImage = image => {
 
-    const deleteRef = storage.ref(`images/${image.name}`)
-    console.log(`deleting ${image.name}`)
+    const storageRef = storage.ref(`images/${image.name}`)
 
     return new Promise((resolve, reject) => {
         db.collection("images").doc(image.name).delete().then(function() {
-            deleteRef.delete().then(() => {
-                console.log("deleted successfully");
-                console.log("Image successfully deleted!");
+            storageRef.delete().then(() => {
                 resolve("Image successfully deleted!");
             }).catch(error => {
-                reject("Error removing reference: ", error);
+                reject("Error removing database reference: ", error);
             });
         }).catch(error => {
             reject("Error removing image: ", error);
