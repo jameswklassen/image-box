@@ -53,6 +53,17 @@ const removeImage = image => {
     });
 };
 
+const removeAllImages = () => {
+    return new Promise((resolve, reject) => {
+        db.collection("images").get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                storage.ref(`images/${doc.data().name}`).delete();
+                doc.ref.delete()
+            });
+        }).then(() => resolve('Deleted All'));
+    });
+};
+
 
 // populates the state arra
 const getImages = () => {
@@ -66,10 +77,11 @@ const getImages = () => {
         });
         resolve(images);
     });
-}
+};
 
 export {
     uploadImage,
     removeImage,
     getImages,
+    removeAllImages,
 }

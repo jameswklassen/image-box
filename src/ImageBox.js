@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImageLibrary from './components/ImageLibrary';
 
-import { uploadImage, removeImage, getImages } from './databse/ImageRepository';
+import { uploadImage, removeImage, getImages, removeAllImages } from './databse/ImageRepository';
 
 class ImageBox extends Component {
 
@@ -71,6 +71,19 @@ class ImageBox extends Component {
 		})
 	}
 
+	handleDeleteAll = () => {
+		this.setState({ imageDeleting: true })
+
+		removeAllImages().then(() => {
+			console.log('Removed all images');
+
+			this.setState({
+				images: [],
+				imageDeleting: false,
+			})
+		})
+	}
+
 	onFileChange = event => {
 		const files = event.target.files;
 
@@ -109,7 +122,8 @@ class ImageBox extends Component {
         return (
             <ImageLibrary
                 handleUpload={this.handleUpload}
-                handleDelete={this.handleDelete}
+				handleDelete={this.handleDelete}
+				handleDeleteAll={this.handleDeleteAll}
                 onFileChange={this.onFileChange}
                 onTagChange={this.onTagChange}
                 setTag={this.setTag}

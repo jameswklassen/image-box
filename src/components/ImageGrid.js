@@ -5,6 +5,7 @@ import {
     Loader,
     Header,
     Icon,
+    Button,
 } from 'semantic-ui-react';
 
 import Image from './Image';
@@ -43,20 +44,36 @@ const renderImages = (images, handleDelete) => {
         );
     }
 }
+
+const renderDeleteAllButton = handleDeleteAll => {
+    return (
+        <Button
+            icon
+            labelPosition='left'
+            color='red'
+            onClick={handleDeleteAll}
+        >
+            <Icon name='trash' />
+            Delete all
+        </Button>
+    );
+}
+
 const ImageGrid = props => {
-    const { images, handleDelete, columns, imagesLoading, imageDeleting } = props;
+    const { images, handleDelete, handleDeleteAll, columns, imagesLoading, imageDeleting } = props;
 
     return (
         <React.Fragment>
             { renderHeader(images) }
-            
+            { images.length > 0 ? renderDeleteAllButton(handleDeleteAll) : '' }
             <Grid
             columns={columns}
             verticalAlign='bottom'
             >
                 <Dimmer inverted active={imagesLoading || imageDeleting}>
-                    <Loader inverted content={`${ imagesLoading ? 'Images Loading' : 'Image deleting'}`}/>
+                    <Loader inverted content={`${ imagesLoading ? 'Images Loading' : 'Deleting'}`}/>
                 </Dimmer>
+
                 { renderImages(images, handleDelete) }
             </Grid>
             

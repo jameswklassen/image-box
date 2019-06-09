@@ -16,7 +16,7 @@ import ImageGrid from './ImageGrid';
 
 
 const ImageLibrary = props => {
-	const { handleUpload, handleDelete, onFileChange, onTagChange, images, imagesToUpload, imagesLoading, imagesUploading, imageDeleting } = props;
+	const { handleUpload, handleDelete, handleDeleteAll, onFileChange, onTagChange, images, imagesToUpload, imagesLoading, imagesUploading, imageDeleting } = props;
 
 	return (
 		<Container>
@@ -51,6 +51,7 @@ const ImageLibrary = props => {
 							imagesLoading={imagesLoading}
 							images={images}
 							handleDelete={handleDelete}
+							handleDeleteAll={handleDeleteAll}
 							imageDeleting={imageDeleting}
 						/>
 					</Segment>
