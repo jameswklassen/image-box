@@ -6,16 +6,16 @@ import {
 	Header,
 	Divider,
 	Button,
-	Grid,
+	Loader,
+	Message,
 } from 'semantic-ui-react'
 
 import { uploadImage, removeImage, getImages } from '../databse/ImageRepository';
-import Image from './Image';
-
-import { IMAGE_UPLOAD_STATUS } from '../common/constants'
 
 import 'semantic-ui-css/semantic.min.css'
 import './ImageLibrary.scss';
+
+import ImageGrid from './ImageGrid';
 
 
 class ImageLibrary extends Component {
@@ -25,14 +25,22 @@ class ImageLibrary extends Component {
 		this.state = {
 			imagesToUpload: null,
 			images: [],
+			imagesLoading: true,
+			imageUploading: false,
+			imageDeleting: false,
 		}
 	}
 
 	componentDidMount() {
 		getImages().then((result) => {
-			this.setState({ images: result});
-		})
+			console.log(result);
+			this.setState({
+				imagesLoading: false,
+				images: result
+			});
+		});
 	}
+
 
 	handleUpload = () => {
 		const { imagesToUpload } = this.state;
@@ -41,6 +49,7 @@ class ImageLibrary extends Component {
 			return
 		}
 
+		this.setState({ imageUploading: true })
 
 		// Iterate through all images 
 		Array.from(imagesToUpload).forEach(image => {
@@ -50,7 +59,8 @@ class ImageLibrary extends Component {
 
 				// add the image we uploaded to the array of images
 				this.setState(prevState => ({
-					images: [...prevState.images, result ]
+					images: [...prevState.images, result ],
+					imageUploading: false
 				}));
 			});
 		});
@@ -81,29 +91,10 @@ class ImageLibrary extends Component {
 		}
 	}
 
-
-	renderImages = () => {
-		console.log('render images');
-
-		if (this.state.images && this.state.images.length !== 0) {
-			const images = this.state.images.map(image => {
-				console.log(image.name, image.link)
-				return(
-					<Grid.Column>
-						<Image
-							image={image}
-							onClose={this.handleRemove}
-							link={image.link}
-						/>
-					</Grid.Column>
-				); 
-			});
-			return images;
-		}
-	}
-
 	render() {
-		const { imagesToUpload } = this.state;
+		console.log('rendering');
+		console.log(this.state.images);
+		const { images, imagesToUpload, imageUploading } = this.state;
 
 		return (
 			<Container text>
@@ -115,32 +106,27 @@ class ImageLibrary extends Component {
 						<Header as="h2">
 							Choose your photos
 						</Header>
+
 						<input type="file" multiple onChange={this.handleChange}></input>
 						<Divider/>
 						<Button
 							primary={imagesToUpload}
 							disabled={!imagesToUpload}
+							loading={imageUploading}
 							onClick={this.handleUpload}
 						>
 							{ imagesToUpload ? 'Upload images' : 'No images selected' } 
 						</Button>
 					</Segment>
+					<Segment>
+						<ImageGrid
+							columns={4}
+							imageUploading={imageUploading}
+							images={images}
+							handleRemove={this.handleRemove}
+						/>
+					</Segment>
 
-
-					{
-						imagesToUpload ? 
-							Array.from(imagesToUpload).forEach(image => {
-								return(<p>{image.link}</p>)
-							}) : 
-							null
-					}
-					
-
-					<Grid
-						columns={5}
-					>
-						{ this.renderImages() }
-					</Grid>
 
 			</Container>
 		);

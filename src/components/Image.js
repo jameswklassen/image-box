@@ -1,23 +1,25 @@
-import React, { Component } from 'react';
-
-
+import React from 'react';
 import { 
     Icon,
     Button,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
+
 
 const Image = props => {
+    const { image, link } = props;
 
     return(
         <div>
             <Button
                 icon
-                onClick={ () => props.onClose(props.image) }
+                labelPosition='left'
+                onClick={ () => props.onClose(image) }
             >
-                <Icon name='close' />
+                <Icon name='trash' />
+                Delete Image
             </Button>
-            <a href={props.link}>
-                <img src={props.link} alt={props.link}/>
+            <a href={link}>
+                <img src={link} alt={link}/>
             </a>
         </div>
     );

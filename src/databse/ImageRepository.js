@@ -24,12 +24,7 @@ const uploadImage = image => {
                         name: image.name,
                         link: url
                     }; 
-    
-                    // // add the image we uploaded to the array of images... maybe don't have to do this
-                    // this.setState(prevState => ({
-                    //     images: [...prevState.images, newImage ]
-                    // }));
-    
+
                     // add the link to the image to the database
                     db.collection('images').doc(image.name).set(newImage);
                     resolve(newImage);
