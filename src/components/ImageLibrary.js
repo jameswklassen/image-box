@@ -4,7 +4,6 @@ import {
 	Segment,
 	Header,
 	Grid,
-	Button,
 } from 'semantic-ui-react'
 
 import 'semantic-ui-css/semantic.min.css'
@@ -16,7 +15,7 @@ import ImageGrid from './ImageGrid';
 
 
 const ImageLibrary = props => {
-	const { handleUpload, handleDelete, handleDeleteAll, onFileChange, onTagChange, images, imagesToUpload, imagesLoading, imagesUploading, imageDeleting } = props;
+	const { handleUpload, handleDelete, handleDeleteAll, onFileChange, onTagChange, images, imagesToUpload, imagesLoading, imagesUploading, imageDeleting, onSearchChange } = props;
 
 	return (
 		<Container>
@@ -40,7 +39,9 @@ const ImageLibrary = props => {
 					</Segment>
 
 					<Segment textAlign="center">
-						<SearchWidget/>
+						<SearchWidget
+							onSearchChange={onSearchChange}
+						/>
 					</Segment>
 				</Grid.Column>
 

@@ -1,14 +1,9 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { 
     Divider,
     Header,
     Search,
-    Button,
-    Item,
-    Input,
-    Grid, 
-    Dimmer,
-    Loader,
+    Label,
 } from 'semantic-ui-react';
 
 const renderHeader = () => {
@@ -23,14 +18,36 @@ const renderHeader = () => {
     );
 }
 
-const SearchWidget = props => {
+class SearchWidget extends Component {
 
-    return (
-        <React.Fragment>
-            { renderHeader() }
-            <Search />
-        </React.Fragment>
-    );
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchResults: [],
+        }
+
+        if (props.images) {
+            const searchResults = props.images.map(image => {
+                return {
+                    title: image.name
+                }
+            })
+            this.setState({searchResults})
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                { renderHeader() }
+                <Search
+                    results={this.state.searchResults}
+                    onSearchChange={this.props.onSearchChange}
+                    resultRenderer={this.resultRenderer}
+                />
+            </React.Fragment>
+        );
+    }
 }
 
 export default SearchWidget;

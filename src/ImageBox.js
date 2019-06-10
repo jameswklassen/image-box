@@ -111,12 +111,19 @@ class ImageBox extends Component {
 	setTag = (id, tag) => {
 		
 		if (tag === '')
-			return;
-
+		return;
+		
 		const { imagesToUpload } = this.state;
 		imagesToUpload[id].tags = tag.replace(/\s/g,'').split(','); 
 		this.setState({ imagesToUpload });
-    }
+	}
+	
+	onSearchChange = event => {
+		this.searchImages(event.target.value);
+	}
+	searchImages = term => {
+		console.log(`searching for ${term}`);
+	};
     
     render() {
         return (
@@ -131,7 +138,8 @@ class ImageBox extends Component {
                 images={this.state.images}
                 imagesLoading={this.state.imagesLoading}
                 imagesUploading={this.state.imagesUploading}
-                imageDeleting={this.state.imageDeleting}
+				imageDeleting={this.state.imageDeleting}
+				onSearchChange={this.onSearchChange}
             />
         )
     }
