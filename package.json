@@ -6,7 +6,7 @@
     "dotenv": "^8.0.0",
     "firebase": "^6.5.0",
     "grommet": "^2.7.6",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "polished": "^3.4.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
